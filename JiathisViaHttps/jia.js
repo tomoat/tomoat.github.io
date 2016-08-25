@@ -409,12 +409,12 @@ var JIATHIS_CONFIGS = {
                         }
                     }
                 }
-                if (g) {
+                /*if (g) {
                     creElm({
                         src: "http://tajs.qq.com/jiathis.php?uid=" + parseInt(JIATHIS_CONFIGS.uid) + "&dm=" + wlh,
                         charset: "utf-8"
                     }, "script")
-                }
+                }*/
             }
             var l = "qzone,tsina,tqq,renren,kaixin001,t163,tsohu,douban,taobao,xiaoyou,msn,139,sohu,tieba,baidu,google",
                 _jck = JIATHIS_CONFIGS.jtck || l,
@@ -974,7 +974,7 @@ var JIATHIS_CONFIGS = {
     ie ? d.attachEvent("onclick", $CKE.disappear) : d
         .addEventListener("click", $CKE.disappear, false);
     if (!conf.do_not_track && wlh) {
-        d.write('<script type="text/javascript" src="' + JIATHIS_CONFIGS.codehost + '/plugin.client.js" charset="utf-8"></script>')
+        //d.write('<script type="text/javascript" src="' + JIATHIS_CONFIGS.codehost + '/plugin.client.js" charset="utf-8"></script>')
     }
 })();
 
