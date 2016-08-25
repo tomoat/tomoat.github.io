@@ -1,8 +1,8 @@
 /* (c) 2012 JiaThis Inc. 0817*/
 var JIATHIS_CONFIGS = {
-    webhost: "https://raw.github.com",
+    webhost: "https://tomoat.github.io",
     lhost: "http://l.jiathis.com",
-    codehost: "https://raw.github.com/airbai/JiathisViaHttps/master",
+    codehost: "https://tomoat.github.io/JiathisViaHttps/JiathisViaHttps",
     sc: false,
     uid: 1626433,
     ckprefix: "jt_",
