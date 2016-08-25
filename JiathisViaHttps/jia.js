@@ -916,7 +916,7 @@ var JIATHIS_CONFIGS = {
     };
     ie ? d.attachEvent("onclick", $CKE.disappear) : d.addEventListener("click", $CKE.disappear, false);
     if (!conf.do_not_track && wlh && typeof(_gnayTrack) != 'object') {
-        d.write('<script type="text/javascript" src="' + JIATHIS_CONFIGS.codehost + '/plugin.client.js" charset="utf-8"></script>')
+        //d.write('<script type="text/javascript" src="' + JIATHIS_CONFIGS.codehost + '/plugin.client.js" charset="utf-8"></script>')
     }
 })();
 
@@ -947,7 +947,7 @@ function jiathis_sendto(a) {
         SU = c.shortUrl == false ? '' : '&su=1';
     B = A + W + G + T + F + E + K + P + R + S + X + C + SU;
     if (a == 'copy' || a == 'fav' || a == 'print' || a == 'weixin') {
-        $CKE.open(B);
+        //$CKE.open(B);
         if (a == 'copy') {
             jiathis_copyUrl()
         } else if (a == 'fav') {
@@ -1148,7 +1148,7 @@ function jiathis_popup(c, d, e) {
             a.src = JIATHIS_CONFIGS.qhost + '/?data=' + d;
             a.width = '220';
             a.height = '220';
-            a.style.marginTop = '15px';
+            // a.style.marginTop = '15px';
             b.innerHTML = '';
             a.alt = '二维码加载失败...';
             b.appendChild(a)
