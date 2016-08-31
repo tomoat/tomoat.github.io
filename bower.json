@@ -1,0 +1,25 @@
+{
+  "name": "tomoat.github.io",
+  "homepage": "https://github.com/tomoat/tomoat.github.io",
+  "authors": [
+    "tomato <ljc6qx@163.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "fetch-jsonp": "^1.0.1",
+    "json3": "^3.3.2",
+    "jwt-decode": "^2.1.0",
+    "lodash": "^4.15.0",
+    "moment": "^2.14.1"
+  }
+}
