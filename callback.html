@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"><script>window.config = {"api_url":"https://api.lingyue.com/v2","callback_uri":"https://tomoat.github.io/callback","qq_id":"101204730","weibo_id":"1286118421"}</script>
+    <!--meta(http-equiv="refresh" content="3;url=/")-->
+  </head>
+  <body>
+    <p>loading...</p>
+  </body>
+  <script src="/js/jwt-decode.min.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/flyjsonp.min.js"></script>
+  <script>
+    $(function () {
+      //console.log()可以
+    });
+    var uid = localStorage.getItem('uid');
+    if (uid) {
+      location.href = document.referrer;
+    }
+    if (location.hash) {
+      //QQ返回
+      var url = getHash();
+      var refer_url = decodeURIComponent(url.state);
+      var access_token = url.access_token;
+      $.getJSON('https://graph.qq.com/oauth2.0/me?access_token=' + access_token + '&callback=?', function (data) {
+        console.log(data);
+      });
+
+      function callback(json) {
+        console.log(json);
+        var userData = {
+          "platform": "qq",
+          "os": 'web',
+          "token": access_token,
+          "openid": json.openid
+        };
+        threeLogin(userData, 'qq', refer_url);
+      }
+    }
+    if (location.search) {
+      //WB返回
+      var url = getSearch();
+      var refer_url = decodeURIComponent(url.state);
+      var author_code = url.code;
+
+      /*FlyJSONP.post({
+        url: 'https://api.weibo.com/oauth2/access_token',
+        parameters: {
+          client_id: config.weibo_id,
+          client_secret: ,
+          grant_type: 'authorization_code',
+          code: author_code,
+          redirect_uri: config.callback_uri
+        },
+        success: function (data) {
+          console.log(data);
+          var userData = {
+            "platform": "weibo",
+            "os": 'web',
+            "token": data.access_token,
+            "openid": data.uid
+          };
+          threeLogin(userData, 'weibo', refer_url);
+        }
+      });*/
+      $.ajax({
+        type: "POST",
+        url: config.api_url + "/login/weibo",
+        data: JSON.stringify({code: author_code}),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(data){
+          console.log(data);
+          if (data) {//登录成功
+            var userObj = jwt_decode(data.access_token);
+            localStorage.setItem('username', userObj.username);
+            localStorage.setItem('uid', userObj.uid);
+            localStorage.setItem('expires_in', data.expires_in);
+            localStorage.setItem('refresh_token', data.refresh_token);
+            localStorage.setItem('token_type', data.token_type);
+            localStorage.setItem('access_token', data.access_token);
+            if (refer_url) {
+              window.location.href = refer_url;
+            }
+          }
+        },
+        error: function(e){
+          console.log(e);
+        }
+      })
+
+    }
+
+    function getHash() {
+      var url = location.hash; //获取url中"?"符后的字串
+      var theRequest = new Object();
+      if (url.indexOf("#") != -1) {
+        var str = url.substr(1);
+        strs = str.split("&");
+        for (var i = 0; i < strs.length; i++) {
+          theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);
+        }
+      }
+      return theRequest;
+    }
+    function getSearch() {
+      var url = location.search; //获取url中"?"符后的字串
+      var theRequest = new Object();
+      if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        strs = str.split("&");
+        for (var i = 0; i < strs.length; i++) {
+          theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);
+        }
+      }
+      return theRequest;
+    }
+    function threeLogin(user, platform, refer_url) {
+      var userData = {
+        "platform": platform,
+        "os": 'web',
+        "token": user.token,
+        "openid": user.openid
+      };
+      localStorage.setItem('platform', platform);
+      $.ajax({
+        type: "POST",
+        url: config.api_url + "/login",
+        data: JSON.stringify(userData),
+        contentType: 'application/json',
+        dataType: 'json',
+        statusCode: {
+          401: function () {
+            $(".infonone").html("登录失败").fadeIn();
+            return false;
+          },
+          400: function () {
+            $(".infonone").html("用户名或密码错误").fadeIn();
+            return false;
+          },
+          500: function () {
+            $(".infonone").html("用户名格式不对").fadeIn();
+            return false;
+          },
+          200: function (data) {
+            console.log(data);
+            if (data) {//登录成功
+              var userObj = jwt_decode(data.access_token);
+              localStorage.setItem('username', userObj.username);
+              localStorage.setItem('uid', userObj.uid);
+              localStorage.setItem('expires_in', data.expires_in);
+              localStorage.setItem('refresh_token', data.refresh_token);
+              localStorage.setItem('token_type', data.token_type);
+              localStorage.setItem('access_token', data.access_token);
+              if (refer_url) {
+                window.location.href = refer_url;
+              }
+            }
+          }
+        }
+      })
+    }
+  </script>
+</html>
